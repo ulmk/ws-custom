@@ -1,2 +1,2 @@
 # ws-custom
-### Step to custom websocket implementation using Hijack and net.Conn
+### Step to custom WS implementation using Hijack and net.Conn
