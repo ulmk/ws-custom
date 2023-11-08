@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatting</title>
+</head>
+<body>  
+    
+
+    <div id="board"></div>
+    <pre id="messages" style="width: 90%; margin-left: 5%; height: 200px; overflow: scroll">
+    </pre>
+    <input type="text" id="messageBox" placeholder="Type your message here" 
+        style="display: block; width: 90%; margin-bottom: 10px; margin-left: 5%; padding: 10px;" />
+    <button id="send" title="Send Message!" style="width: 90%; margin-left: 5%; height: 30px;">
+        Send Message
+    </button>
+    <script>
+        if ("WebSocket" in window) {
+            const sendBtn = document.getElementById('send');
+            const messages = document.querySelector('#messages');
+            const messageBox = document.querySelector('#messageBox');
+            
+            function showMessage(message) {
+                messages.textContent += `\n${message}`;
+                messages.scrollTop = messages.scrollHeight;
+                messageBox.value = '';
+            }
+
+            let ws = new WebSocket("ws://localhost:3000/ws");
+
+            ws.onopen = function() {
+                console.log("Connected to Server"); 
+            };
+
+            sendBtn.onclick = function() {
+                if (ws) {
+                    ws.send(messageBox.value);
+                    showMessage(`ME: ${messageBox.value}`);
+                } else {
+                    alert("ERROR: Not connected... refresh to try again!");
+                }
+            }
+
+            ws.onmessage = (event) => { 
+                const data = JSON.parse(event.data);
+                console.log("data", data); 
+                showMessage(`YOU: ${data}`);
+            };
+
+            ws.onclose = function() { 
+                ws = null;
+                alert("Connection closed... refresh to try again!"); 
+            };
+
+        } else {
+            alert("WebSocket NOT supported by your Browser!");
+        }
+    </script>
+</body>
+</html>
