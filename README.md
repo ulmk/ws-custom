@@ -1,7 +1,7 @@
 # ws-custom
 Step into custom WS implementation without any third-party libraries.
 
-### Using a protocol 
+### Used protocol
 ```js
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
